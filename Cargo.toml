@@ -3,6 +3,9 @@ name = "rust_cards"
 version = "0.1.0"
 edition = "2018"
 description = "Simulates playing cards"
+licence = "MIT"
+repository = "https://github.com/ottobrown/rust_cards"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
