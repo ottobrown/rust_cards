@@ -22,13 +22,19 @@ impl Suit {
         }
     }
 
-    pub fn string(suit: Suit) -> String {
-        match suit {
-            Suit::Club => String::from("♣"),
+    pub fn string(&self) -> String {
+        match self {
+            Suit::Club =>    String::from("♣"),
             Suit::Diamond => String::from("♦"),
-            Suit::Heart => String::from("♥"),
-            Suit::Spade => String::from("♠")
+            Suit::Heart =>   String::from("♥"),
+            Suit::Spade =>   String::from("♠")
         }
+    }
+
+    pub fn random() -> Suit {
+        let mut rng = thread_rng();
+
+        Suit::item_from_index(rng.gen_range(0..3))
     }
 }
 
@@ -72,8 +78,8 @@ impl Value {
         }
     }
 
-    pub fn string(value: Value) -> String {
-        match value {
+    pub fn string(&self) -> String {
+        match self {
             Value::Two => String::from("2"),
             Value::Three => String::from("3"),
             Value::Four => String::from("4"),
@@ -88,6 +94,12 @@ impl Value {
             Value::Queen => String::from("Q"),
             Value::Ace => String::from("A"),
         }
+    }
+
+    pub fn random() -> Value {
+        let mut rng = thread_rng();
+
+        Value::item_from_index(rng.gen_range(0..12))
     }
 }
 
@@ -104,13 +116,15 @@ impl Card {
         }
     }
     
+    pub fn random() -> Card {
+        Card::new(
+            Value::random(),
+            Suit::random()
+        )
+    }
+
+    pub fn display(&self) -> String {
+        self.value.string() + &self.suit.string()
+    }
 }
 
-pub fn random_card() -> Card {
-    let mut rng = thread_rng();
-
-    Card::new(
-        Value::item_from_index(rng.gen_range(0..12)),
-        Suit::item_from_index(rng.gen_range(0..12))
-    )
-}

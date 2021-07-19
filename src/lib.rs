@@ -1,17 +1,59 @@
 mod cards;
 mod hand;
-mod games;
 
 #[cfg(test)]
 mod tests {
+    use std::time::Instant;
+
     use crate::hand;
     use crate::hand::Hand;
 
     use crate::cards;
-    use cards::Suit;
-    use cards::Value;
 
-    use crate::games;
+    #[test]
+    fn full_hand() {
+        print_hand(&hand::Hand::full_deck() )
+    }
+
+    pub fn score_hand(hand: &Hand) -> i32 {
+        let mut score = 0;
+        let mut aces = 0;
+
+        for card in &hand.vec {
+            score += score_card(&card.value);
+            if &card.value == &cards::Value::Ace {
+                aces += 1
+            }
+        }
+
+        while score > 21 && aces > 0 {
+            score -= 10;
+            aces -= 1
+        }
+        if score > 21 {
+            return 0
+        }
+        return score
+    }
+
+    /// scores ace as 11
+    fn score_card(card: &cards::Value) -> i32 {
+        match card {
+            cards::Value::Two => 2,
+            cards::Value::Three => 3,
+            cards::Value::Four => 4,
+            cards::Value::Five => 5,
+            cards::Value::Six => 6,
+            cards::Value::Seven => 7,
+            cards::Value::Eight => 8,
+            cards::Value::Nine => 9,
+            cards::Value::Ten => 10,
+            cards::Value::Jack => 10,
+            cards::Value::Queen => 10,
+            cards::Value::King => 10,
+            cards::Value::Ace => 11,
+        }
+    }
 
     #[test]
     fn blackjack_game() {
@@ -26,7 +68,7 @@ mod tests {
         loop {
             print_hand(&hand);
             println!(": ");
-            let s = games::blackjack::score_hand(&hand);
+            let s = score_hand(&hand);
             if s != 0 {println!("{}", s)}
             else {
                 println!("You busted!");
@@ -58,11 +100,23 @@ mod tests {
 
     }
 
+    #[test]
+    fn random_cards() {
+        let now = Instant::now();
+        for _i in 0..100 {
+            println!("{}", cards::Card::random().display())
+        }
+
+        println!("{} ms", now.elapsed().as_millis())
+    }
+
+    
+
     //not a test
     fn print_hand(hand: &hand::Hand) {
         for card in &hand.vec {
-            let v = cards::Value::string(card.value);
-            let s = cards::Suit::string(card.suit);
+            let v = card.value.string();
+            let s = card.suit.string();
 
             print!("{}{} ", v, s);
         }
