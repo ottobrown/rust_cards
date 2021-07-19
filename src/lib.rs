@@ -104,7 +104,7 @@ mod tests {
     fn random_cards() {
         let now = Instant::now();
         for _i in 0..100 {
-            println!("{}", cards::Card::random().display())
+            println!("{}", cards::Card::random().string())
         }
 
         println!("{} ms", now.elapsed().as_millis())
@@ -115,10 +115,7 @@ mod tests {
     //not a test
     fn print_hand(hand: &hand::Hand) {
         for card in &hand.vec {
-            let v = card.value.string();
-            let s = card.suit.string();
-
-            print!("{}{} ", v, s);
+            print!("{}", card.string())
         }
     }
 

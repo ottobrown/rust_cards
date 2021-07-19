@@ -22,6 +22,12 @@ impl Suit {
         }
     }
 
+    /// returns the symbol for the suit
+    /// 
+    /// Club => ♣
+    /// Diamond => ♦ 
+    /// Heart => ♥ 
+    /// Spade => ♠
     pub fn string(&self) -> String {
         match self {
             Suit::Club =>    String::from("♣"),
@@ -123,7 +129,7 @@ impl Card {
         )
     }
 
-    pub fn display(&self) -> String {
+    pub fn string(&self) -> String {
         self.value.string() + &self.suit.string()
     }
 }
