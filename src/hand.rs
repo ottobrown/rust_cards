@@ -7,7 +7,7 @@ use crate::cards::Card;
 use crate::cards::Suit;
 use crate::cards::Value;
 
-//#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct Hand {
     pub vec: Vec<Card>
 }
@@ -77,7 +77,7 @@ impl Hand {
     ///         Card::new(Value::Three, Suit::Spade)
     ///     ]
     /// );
-    /// // h == A♠, 2♠, 3♠
+    /// // A♠, 2♠, 3♠
     /// 
     /// let popped = h.pop();
     /// // h == 2♠, 3♠
@@ -103,7 +103,7 @@ impl Hand {
     ///         Card::new(Value::Three, Suit::Spade)
     ///     ]
     /// );
-    /// // h == A♠, 2♠, 3♠
+    /// // A♠, 2♠, 3♠
     /// 
     /// let popped = h.pop();
     /// // h == A♠, 2♠
@@ -123,11 +123,11 @@ impl Hand {
     ///         Card::new(Value::Three, Suit::Spade)
     ///     ]
     /// );
-    /// // h == A♠, 2♠, 3♠
+    /// // A♠, 2♠, 3♠
     /// 
     /// h = h.push(Card::new(Value::King, Suit::Spade))
-    /// 
-    /// // h == K♠, A♠, 2♠, 3♠
+    /// // K♠, A♠, 2♠, 3♠
+    /// ```
     pub fn push_top(&self, card: Card) -> Hand {
         self.reverse().push_bottom(card).reverse()
     }
@@ -141,11 +141,11 @@ impl Hand {
     ///         Card::new(Value::Three, Suit::Spade)
     ///     ]
     /// );
-    /// // h == A♠, 2♠, 3♠
+    /// // A♠, 2♠, 3♠
     /// 
     /// h = h.push(Card::new(Value::Four, Suit::Spade))
-    /// 
-    /// // h == A♠, 2♠, 3♠, 4♠
+    /// // A♠, 2♠, 3♠, 4♠
+    /// ```
     pub fn push_bottom(&self, card: Card) -> Hand {
         let mut clone = self.vec.clone();
         clone.push(card);
@@ -163,7 +163,27 @@ impl Hand {
         )
     }
 
-    //pub fn stack_front(&self, hand: Hand) -> Hand {}
-    //pub fn stack_back(&self, hand: Hand) -> Hand {}
+    /// Stacks a hand on top of another Hand
+    /// 
+    /// ```
+    /// 
+    /// ```
+    pub fn stack_top(&self, hand: Hand) -> Hand {
+        let mut copy = self.clone();
+        for card in hand.reverse().vec {
+            copy = copy.push_top(card);
+        }
+
+        copy
+    }
+    pub fn stack_bottom(&self, hand: Hand) -> Hand {
+        let mut copy = self.clone();
+
+        for card in hand.vec {
+            copy = copy.push_bottom(card);
+        }
+
+        copy
+    }
 
 }
